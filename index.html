@@ -1,156 +1,650 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HVAC Maintenance System</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#0a2e5c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="HVAC Maintenance">
+<title>HVAC Maintenance — King Faisal</title>
 <style>
-body {
-  font-family: Arial;
-  background: #f4f6f9;
-  padding: 15px;
-}
-
-h2 {
-  text-align: center;
-}
-
-form {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  max-width: 500px;
-  margin: auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-label {
-  margin-top: 10px;
-  display: block;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-}
-
-button {
-  margin-top: 15px;
-  padding: 12px;
-  width: 100%;
-  background: #007bff;
-  color: white;
-  border: none;
-  font-size: 16px;
-}
-
-#preview {
-  margin-top: 10px;
-  width: 100%;
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:system-ui,-apple-system,sans-serif;font-size:14px}
+body{background:#f0f2f5;color:#0d1b2a}
+.app{display:flex;flex-direction:column;height:100%;max-width:520px;margin:0 auto;background:#fff;box-shadow:0 0 30px rgba(0,0,0,.1)}
+.hdr{background:#0a2e5c;color:#fff;padding:11px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.hdr-icon{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.hdr-text{flex:1;min-width:0}
+.hdr-text h1{font-size:13px;font-weight:600}
+.hdr-text p{font-size:10px;color:rgba(255,255,255,.6);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.offl{background:rgba(46,194,126,.2);border:.5px solid rgba(46,194,126,.4);color:#4ade80;font-size:10px;padding:2px 7px;border-radius:20px;display:flex;align-items:center;gap:3px;flex-shrink:0}
+.offl-dot{width:5px;height:5px;border-radius:50%;background:#4ade80}
+.tabs{display:flex;background:#0a2e5c;border-top:.5px solid rgba(255,255,255,.1);flex-shrink:0}
+.tab{flex:1;padding:8px 4px 9px;font-size:10px;text-align:center;cursor:pointer;color:rgba(255,255,255,.4);border-bottom:2px solid transparent;transition:all .2s}
+.tab-icon{font-size:14px;display:block;margin-bottom:1px}
+.tab.active{color:#fff;border-bottom-color:#00b4d8;font-weight:500}
+.pages{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.pg{display:none;padding:12px}
+.pg.active{display:block}
+/* Search */
+.search-box{display:flex;align-items:center;background:#f4f7fb;border:.5px solid #e2e8f0;border-radius:9px;padding:8px 11px;margin-bottom:10px;gap:7px}
+.search-box input{flex:1;border:none;background:transparent;font-size:13px;color:#0d1b2a;outline:none}
+.search-box input::placeholder{color:#8a94a6}
+/* Zone */
+.zone-hdr{background:#0a2e5c;color:#fff;padding:6px 10px;border-radius:7px;font-size:11px;font-weight:600;margin:9px 0 5px;display:flex;justify-content:space-between;align-items:center}
+.zone-cnt{font-size:9px;opacity:.6;font-weight:400}
+/* Unit card */
+.ucard{border:.5px solid #e2e8f0;border-radius:10px;padding:9px 11px;margin-bottom:6px;cursor:pointer;background:#fff;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.ucard:active{transform:scale(.98);border-color:#0a2e5c;background:#f0f6ff}
+.urow{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.uname{font-weight:600;font-size:12px;color:#0a2e5c;font-family:monospace}
+.bdg{font-size:9px;padding:2px 7px;border-radius:20px;font-weight:500}
+.b-ok{background:#e8f8f0;color:#1a7a4a}
+.b-due{background:#fff3e0;color:#a05c00}
+.umeta{font-size:10px;color:#8a94a6}
+/* Form */
+.fhdr{background:linear-gradient(135deg,#0a2e5c,#1a5fae);color:#fff;border-radius:10px;padding:11px 13px;margin-bottom:10px}
+.fhdr h2{font-size:13px;font-weight:600;font-family:monospace;margin-bottom:2px}
+.fhdr p{font-size:10px;opacity:.7}
+.stitle{font-size:10px;font-weight:600;color:#8a94a6;text-transform:uppercase;letter-spacing:.07em;margin:11px 0 5px}
+.finrow{display:flex;gap:6px;margin-bottom:8px}
+.fin{flex:1;border:.5px solid #e2e8f0;border-radius:7px;padding:8px 10px;font-size:13px;background:#fff;color:#0d1b2a;font-family:system-ui,sans-serif}
+.fin:focus{outline:none;border-color:#0a2e5c}
+.lvltabs{display:flex;gap:4px;margin-bottom:9px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.lvltabs::-webkit-scrollbar{display:none}
+.lt{padding:4px 10px;border-radius:20px;border:.5px solid #e2e8f0;font-size:10px;cursor:pointer;background:#fff;color:#4a5568;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.lt.active{background:#0a2e5c;color:#fff;border-color:#0a2e5c}
+.pbar-row{display:flex;justify-content:space-between;font-size:10px;color:#8a94a6;margin-bottom:4px}
+.pbar-row span{color:#0a2e5c;font-weight:600}
+.pbar{height:4px;background:#e2e8f0;border-radius:2px;margin-bottom:9px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,#0a2e5c,#00b4d8);border-radius:2px;transition:width .3s}
+.clwrap{background:#fff;border:.5px solid #e2e8f0;border-radius:10px;overflow:hidden;margin-bottom:4px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.ci{padding:9px 11px;border-bottom:.5px solid #e2e8f0;display:flex;align-items:flex-start;gap:8px}
+.ci:last-child{border-bottom:none}
+.ciinfo{flex:1;min-width:0}
+.cilbl{font-size:12px;font-weight:600;margin-bottom:1px;color:#0d1b2a}
+.cisub{font-size:10px;color:#8a94a6;font-family:monospace}
+.tg{display:flex;gap:3px;flex-shrink:0}
+.tb{padding:4px 9px;border-radius:20px;border:.5px solid #e2e8f0;font-size:10px;cursor:pointer;background:#fff;color:#4a5568;transition:all .15s;white-space:nowrap}
+.tb:active{transform:scale(.95)}
+.tb.ty{background:#e8f8f0;border-color:#a3d9be;color:#1a7a4a;font-weight:600}
+.tb.tn{background:#fef0f0;border-color:#f5bfc0;color:#c0392b;font-weight:600}
+.numin{width:68px;border:.5px solid #e2e8f0;border-radius:6px;padding:4px 7px;font-size:12px;text-align:center;background:#fff;color:#0d1b2a;font-family:monospace}
+.numin:focus{outline:none;border-color:#0a2e5c}
+.ulbl{font-size:9px;color:#8a94a6;font-family:monospace;margin-right:2px}
+.nota{width:100%;border:.5px solid #e2e8f0;border-radius:7px;padding:8px 10px;font-size:12px;min-height:60px;resize:vertical;font-family:system-ui,sans-serif;background:#fff;color:#0d1b2a}
+.nota:focus{outline:none;border-color:#0a2e5c}
+.sbtn{width:100%;background:#0a2e5c;color:#fff;border:none;border-radius:9px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:11px}
+.sbtn:active{opacity:.85}
+/* Success */
+.succ{text-align:center;padding:24px 12px}
+.si{font-size:46px;margin-bottom:9px}
+.st{font-size:16px;font-weight:600;margin-bottom:4px;color:#0a2e5c}
+.ss{font-size:11px;color:#4a5568;margin-bottom:14px;line-height:1.7;font-family:monospace}
+.sstats{display:flex;justify-content:center;gap:20px;margin-bottom:16px}
+.sstat{text-align:center}
+.snum{font-size:22px;font-weight:700}
+.slbl{font-size:10px;color:#8a94a6;margin-top:1px}
+.abtns{display:flex;flex-direction:column;gap:6px}
+.ab{padding:10px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:500;border:.5px solid #e2e8f0;background:#fff;color:#0d1b2a;width:100%;font-family:system-ui,sans-serif;text-align:center}
+.ab:active{transform:scale(.98)}
+.ab.navy{background:#0a2e5c;color:#fff;border-color:#0a2e5c}
+.ab.grn{background:#e8f8f0;color:#1a7a4a;border-color:#a3d9be}
+/* Records */
+.ri{background:#fff;border:.5px solid #e2e8f0;border-radius:9px;padding:9px 11px;margin-bottom:7px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.rrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.rname{font-weight:600;font-size:11px;color:#0a2e5c;font-family:monospace}
+.rdate{font-size:10px;color:#8a94a6;font-family:monospace}
+.rtech{font-size:10px;color:#4a5568;margin-bottom:5px}
+.rpills{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+.rp{font-size:9px;padding:2px 6px;border-radius:10px;font-family:monospace}
+.rbtn{font-size:9px;padding:2px 8px;border-radius:10px;border:.5px solid #e2e8f0;cursor:pointer;background:#fff;color:#4a5568;margin-right:auto}
+.empty{text-align:center;padding:36px 16px;color:#8a94a6}
+.empty-icon{font-size:32px;margin-bottom:8px;opacity:.5}
+/* Info */
+.info{background:#EBF4FF;border:.5px solid #B5D4F4;border-radius:8px;padding:8px 11px;font-size:11px;color:#0a2e5c;margin-bottom:10px;line-height:1.7}
+/* QR */
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px}
+.qcard{background:#fff;border:.5px solid #e2e8f0;border-radius:9px;padding:10px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.qname{font-size:10px;font-weight:700;margin-bottom:6px;color:#0a2e5c;font-family:monospace;line-height:1.3;word-break:break-all}
+.qid{font-size:9px;color:#8a94a6;margin-top:4px;font-family:monospace}
+/* Modal */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;z-index:999;padding:0}
+.mbox{background:#fff;border-radius:16px 16px 0 0;padding:16px 14px 26px;width:100%;max-width:520px;margin:0 auto;animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mbox h3{font-size:14px;font-weight:600;margin-bottom:9px;color:#0a2e5c}
+.mmsg{background:#f4f7fb;border:.5px solid #e2e8f0;border-radius:8px;padding:10px;font-size:11px;line-height:1.8;margin-bottom:11px;white-space:pre-wrap;max-height:250px;overflow-y:auto;font-family:monospace;color:#0d1b2a}
+.mbtns{display:flex;gap:7px}
+.mb{flex:1;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;border:.5px solid #e2e8f0;background:#fff;color:#0d1b2a;font-family:system-ui,sans-serif;font-weight:500}
+.mb.navy{background:#0a2e5c;color:#fff;border-color:#0a2e5c}
+/* QR zone tabs */
+.ztabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;margin-bottom:8px}
+.ztabs::-webkit-scrollbar{display:none}
+.zt{padding:4px 10px;border-radius:20px;border:.5px solid #e2e8f0;font-size:10px;cursor:pointer;background:#fff;color:#4a5568;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.zt.active{background:#0a2e5c;color:#fff;border-color:#0a2e5c}
 </style>
-
 </head>
-
 <body>
+<div class="app">
+  <div class="hdr">
+    <div class="hdr-icon">❄️</div>
+    <div class="hdr-text">
+      <h1>HVAC Preventive Maintenance</h1>
+      <p id="hdrsub">AL MAJAL — King Faisal Medical Complex</p>
+    </div>
+    <div class="offl"><div class="offl-dot"></div>Offline</div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="go('units')"><span class="tab-icon">🏢</span>الوحدات</div>
+    <div class="tab" onclick="go('form')"><span class="tab-icon">📋</span>النموذج</div>
+    <div class="tab" onclick="go('records')"><span class="tab-icon">📁</span>السجلات</div>
+    <div class="tab" onclick="go('qr')"><span class="tab-icon">⬛</span>QR Codes</div>
+  </div>
+  <div class="pages">
 
-<h2>AHU Maintenance</h2>
+    <!-- UNITS -->
+    <div class="pg active" id="pg-units">
+      <div class="search-box">
+        <span style="font-size:14px;color:#8a94a6">🔍</span>
+        <input id="search-input" placeholder="ابحث عن وحدة..." oninput="filterUnits(this.value)">
+      </div>
+      <div id="units-list"></div>
+    </div>
 
-<form id="form">
+    <!-- FORM -->
+    <div class="pg" id="pg-form">
+      <div id="form-wrap">
+        <div class="empty"><div class="empty-icon">👈</div><div>اختر وحدة من تبويب الوحدات</div></div>
+      </div>
+    </div>
 
-<label>Unit ID</label>
-<input type="text" id="unit" readonly>
+    <!-- RECORDS -->
+    <div class="pg" id="pg-records">
+      <div class="info">💡 السجلات محفوظة على الجهاز — تعمل بدون إنترنت</div>
+      <div id="rec-list"></div>
+    </div>
 
-<label>Technician</label>
-<input type="text" id="tech" required>
+    <!-- QR -->
+    <div class="pg" id="pg-qr">
+      <div class="info">📲 امسح QR الوحدة لفتح نموذجها مباشرة</div>
+      <div style="background:#fff;border:.5px solid #e2e8f0;border-radius:9px;padding:9px 11px;margin-bottom:10px">
+        <div style="font-size:10px;font-weight:600;color:#8a94a6;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">🔗 رابط الموقع</div>
+        <div style="display:flex;gap:5px">
+          <input id="url-input" style="flex:1;border:.5px solid #e2e8f0;border-radius:6px;padding:6px 8px;font-size:10px;font-family:monospace;background:#fff;color:#0d1b2a" placeholder="https://username.github.io/repo">
+          <button onclick="updateURL()" style="background:#0a2e5c;color:#fff;border:none;border-radius:6px;padding:6px 10px;font-size:10px;cursor:pointer;white-space:nowrap">تحديث</button>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+        <div style="font-size:10px;font-weight:600;color:#8a94a6;text-transform:uppercase;letter-spacing:.05em">المنطقة</div>
+        <button onclick="printAllQR()" style="background:#0a2e5c;color:#fff;border:none;border-radius:7px;padding:6px 10px;font-size:10px;cursor:pointer">🖨️ طباعة الكل</button>
+      </div>
+      <div class="ztabs" id="qr-zone-tabs"></div>
+      <div class="qgrid" id="qr-grid"></div>
+    </div>
 
-<label>Date</label>
-<input type="datetime-local" id="date">
+  </div>
+</div>
 
-<label>Maintenance Type</label>
-<select id="type">
-  <option>Preventive</option>
-  <option>Corrective</option>
-  <option>Emergency</option>
-</select>
-
-<label>Status</label>
-<select id="status">
-  <option>Completed</option>
-  <option>Pending</option>
-</select>
-
-<label>Notes</label>
-<textarea id="notes"></textarea>
-
-<label>Take Photo</label>
-<input type="file" id="photo" accept="image/*" capture="environment" required>
-
-<img id="preview"/>
-
-<button type="submit">Submit</button>
-
-</form>
+<!-- MODAL -->
+<div class="mbg" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="mbox">
+    <h3>📨 تقرير للمشرف</h3>
+    <div class="mmsg" id="modal-msg"></div>
+    <div class="mbtns">
+      <button class="mb" onclick="closeModal()">إغلاق</button>
+      <button class="mb navy" onclick="copyReport()">📋 نسخ التقرير</button>
+    </div>
+  </div>
+</div>
 
 <script>
-
-// ✅ قراءة QR (unit)
-const params = new URLSearchParams(window.location.search);
-document.getElementById("unit").value = params.get("unit") || "UNKNOWN";
-
-// ✅ تاريخ تلقائي
-document.getElementById("date").value = new Date().toISOString().slice(0,16);
-
-// ✅ عرض الصورة قبل الإرسال
-document.getElementById("photo").addEventListener("change", function(e){
-  const file = e.target.files[0];
-  if(file){
-    document.getElementById("preview").src = URL.createObjectURL(file);
+window.onerror=function(msg,src,line,col,err){
+  document.getElementById('units-list').innerHTML='<div style="padding:20px;color:red;font-size:12px">Error: '+msg+' (line '+line+')</div>';
+  console.error('JS Error:',msg,src,line,col,err);
+  return false;
+};
+//---
+// QR CODE ENGINE — Pure JS, ISO 18004 compliant
+//---
+var QR=(function(){
+  var EXP=new Array(512),LOG=new Array(256);
+  (function(){var x=1;for(var i=0;i<256;i++){EXP[i]=x;LOG[x]=i;x=(x+x);if(x>255)x^=0x11d;}for(var i=0;i<256;i++)EXP[i+255]=EXP[i];})();
+  function mul(a,b){return(a&&b)?EXP[LOG[a]+LOG[b]]:0;}
+  function rsGen(n){var g=[1];for(var i=0;i<n;i++){var r=new Array(g.length+1).fill(0);for(var j=0;j<g.length;j++){r[j]^=mul(g[j],1);r[j+1]^=mul(g[j],EXP[i]);}g=r;}return g;}
+  function rsEncode(data,nsym){var gen=rsGen(nsym);var msg=data.concat(new Array(nsym).fill(0));for(var i=0;i<data.length;i++){var c=msg[i];if(c)for(var j=0;j<gen.length;j++)msg[i+j]^=mul(gen[j],c);}return msg.slice(data.length);}
+  var CAP={1:[16,10,1],2:[28,16,1],3:[44,26,1],4:[64,18,2],5:[86,24,2],6:[108,16,4],7:[124,18,4],8:[154,22,4],9:[182,22,5],10:[216,26,5]};
+  var AP={2:[6,18],3:[6,22],4:[6,26],5:[6,30],6:[6,34],7:[6,22,38],8:[6,24,42],9:[6,26,46],10:[6,28,50]};
+  function newM(n){var m=[];for(var i=0;i<n;i++){m[i]=new Int8Array(n);for(var j=0;j<n;j++)m[i][j]=-1;}return m;}
+  function finder(m,r,c){var n=m.length;for(var i=-1;i<=7;i++)for(var j=-1;j<=7;j++){var rr=r+i,cc=c+j;if(rr<0||rr>=n||cc<0||cc>=n)continue;m[rr][cc]=((i>=0&&i<=6&&(j===0||j===6))||(j>=0&&j<=6&&(i===0||i===6))||(i>=2&&i<=4&&j>=2&&j<=4))?1:0;}}
+  function align(m,r,c){for(var i=-2;i<=2;i++)for(var j=-2;j<=2;j++)if(m[r+i][c+j]<0)m[r+i][c+j]=(Math.abs(i)===2||Math.abs(j)===2||(i===0&&j===0))?1:0;}
+  function buildBase(v){var n=4*v+17,m=newM(n);finder(m,0,0);finder(m,0,n-7);finder(m,n-7,0);for(var i=8;i<n-8;i++){if(m[6][i]<0)m[6][i]=i%2?0:1;if(m[i][6]<0)m[i][6]=i%2?0:1;}m[4*v+9][8]=1;for(var i=0;i<9;i++)if(m[i][8]<0)m[i][8]=0;for(var i=0;i<8;i++)if(m[8][i]<0)m[8][i]=0;for(var i=n-8;i<n;i++){if(m[i][8]<0)m[i][8]=0;if(m[8][i]<0)m[8][i]=0;}var ap=AP[v]||[];for(var a=0;a<ap.length;a++)for(var b=0;b<ap.length;b++)if(m[ap[a]][ap[b]]<0)align(m,ap[a],ap[b]);return m;}
+  function placeData(m,bits){var n=m.length,idx=0,up=true;for(var col=n-1;col>=1;col-=2){if(col===6)col=5;for(var i=0;i<n;i++){var r=up?n-1-i:i;for(var d=0;d<2;d++){var c=col-d;if(m[r][c]>=0)continue;m[r][c]=idx<bits.length?bits[idx++]:0;}}up=!up;}}
+  function applyMask(m,k){var n=m.length,r=newM(n);for(var i=0;i<n;i++)for(var j=0;j<n;j++){var inv=k===0?(i+j)%2===0:k===1?i%2===0:k===2?j%3===0:k===3?(i+j)%3===0:k===4?(Math.floor(i/2)+Math.floor(j/3))%2===0:k===5?(i*j)%2+(i*j)%3===0:k===6?((i*j)%2+(i*j)%3)%2===0:((i+j)%2+(i*j)%3)%2===0;r[i][j]=m[i][j]^(inv?1:0);}return r;}
+  function writeFmt(m,mk){var fmt=(0)|mk,g=0x537,v=fmt*1024;for(var i=14;i>=10;i--)if(v&(Math.pow(2,i)|0))v^=g*Math.pow(2,i-10)|0;var enc=((fmt*1024)|(v&0x3FF))^0x5412;var n=m.length;var pos=[[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],[7,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8]];for(var i=0;i<15;i++){var b=(enc>>(14-i))&1;m[pos[i][0]][pos[i][1]]=b;if(i<8)m[n-1-i][8]=b;else m[8][n-15+i]=b;}m[n-8][8]=1;}
+  function score(m){var n=m.length,s=0;for(var i=0;i<n;i++){var run=1;for(var j=1;j<n;j++){if(m[i][j]===m[i][j-1]){run++;if(run===5)s+=3;else if(run>5)s++;}else run=1;}}return s;}
+  function encode(text){
+    var bytes=[];for(var i=0;i<text.length;i++)bytes.push(text.charCodeAt(i)&0xFF);
+    var ver=1;for(var v=1;v<=10;v++){if(CAP[v]&&CAP[v][0]>=bytes.length+3){ver=v;break;}}
+    var cap=CAP[ver];
+    var bits=[0,1,0,0];for(var i=7;i>=0;i--)bits.push((bytes.length>>i)&1);
+    bytes.forEach(function(b){for(var i=7;i>=0;i--)bits.push((b>>i)&1);});
+    for(var i=0;i<4&&bits.length<cap[0]*8;i++)bits.push(0);
+    while(bits.length%8)bits.push(0);
+    var pad=[0xEC,0x11],pi=0;
+    while(bits.length<cap[0]*8){var pw=pad[pi++%2];for(var i=7;i>=0;i--)bits.push((pw>>i)&1);}
+    var db=[];for(var i=0;i<bits.length;i+=8){var b=0;for(var j=0;j<8;j++)b=(b*2)|(bits[i+j]||0);db.push(b);}
+    var bs=Math.floor(db.length/cap[2]),ad=[],ae=[];
+    for(var i=0;i<cap[2];i++){var bl=db.slice(i*bs,(i+1)*bs);ad.push(bl);ae.push(rsEncode(bl,cap[1]));}
+    var cw=[];var mx=Math.max.apply(null,ad.map(function(b){return b.length;}));
+    for(var i=0;i<mx;i++)ad.forEach(function(b){if(i<b.length)cw.push(b[i]);});
+    for(var i=0;i<cap[1];i++)ae.forEach(function(b){if(i<b.length)cw.push(b[i]);});
+    var cbits=[];cw.forEach(function(b){for(var i=7;i>=0;i--)cbits.push((b>>i)&1);});
+    var base=buildBase(ver);placeData(base,cbits);
+    var best=null,bestS=Infinity;
+    for(var k=0;k<8;k++){var mk=applyMask(base,k);writeFmt(mk,k);var s=score(mk);if(s<bestS){bestS=s;best=mk;}}
+    return{M:best,n:4*ver+17};
   }
+  function toSVG(qr,size,dark,light){
+    var n=qr.n,cell=size/n,rects='';
+    for(var r=0;r<n;r++)for(var c=0;c<n;c++)
+      if(qr.M[r][c]===1)rects+='<rect x="'+(c*cell).toFixed(2)+'" y="'+(r*cell).toFixed(2)+'" width="'+(cell+0.3).toFixed(2)+'" height="'+(cell+0.3).toFixed(2)+'"/>';
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" shape-rendering="crispEdges"><rect width="'+size+'" height="'+size+'" fill="'+(light||'#fff')+'"/><g fill="'+(dark||'#000')+'">'+rects+'</g></svg>';
+  }
+  return{encode:encode,toSVG:toSVG};
+})();
+
+//---
+// DATA — ALL 85 UNITS FROM 10 ZONES
+//---
+var ZONES=[
+  {id:'BSM',name:'البدروم',en:'Basement',units:['A.H.U-B01A','A.H.U-B01B','A.H.U-B02','A.H.U-B03','A.H.U-B04','A.H.U-B05A','A.H.U-B05B']},
+  {id:'Z1', name:'زون 1',  en:'Zone 1',  units:['A.H.U-G08','A.H.U-F19B','A.H.U-S01']},
+  {id:'Z2', name:'زون 2',  en:'Zone 2',  units:['F.A.H.U-4Th1','F.A.H.U-4TH2','F.A.H.U-T02','A.H.U-G10A','A.H.U-G10B','A.H.U-G12','A.H.U-R01']},
+  {id:'Z3', name:'زون 3',  en:'Zone 3',  units:['F.A.H.U-S02','F.A.H.U-G09','F.A.H.U-F20B']},
+  {id:'Z4', name:'زون 4',  en:'Zone 4',  units:['AHU-G05A','AHU-G05B','FAHU-F13','FAHU-F14','FAHU-F15','FAHU-F20','FAHU-G01','FAHU-G01/R','FAHU-G02','FAHU-G02/R','FAHU-G03']},
+  {id:'Z5', name:'زون 5',  en:'Zone 5',  units:['AHU-G02A','AHU-G02B','AHU-G03','AHU-G04','AHU-G10A','AHU-G10B','FAHU-17B','FAHU-17C','FAHU-17C/R','FAHU-F16A','FAHU-F16B','FAHU-F16B/R','FAHU-F17A','FAHU-F17A/R','FAHU-F17B/R']},
+  {id:'Z6', name:'زون 6',  en:'Zone 6',  units:['FAHU-F02','FAHU-F05','FAHU-F18','FAHU-G05','FAHU-G05/R','FAHU-G06','FAHU-G07','FAHU-G07/R','FAHU-G13','FAHU-G14']},
+  {id:'Z7', name:'زون 7',  en:'Zone 7',  units:['AHU-G08','AHU-G09A','FAHU-F01','FAHU-F04A','FAHU-F04B','FAHU-F05A','FAHU-F05A/R','FAHU-F05B']},
+  {id:'Z8', name:'زون 8',  en:'Zone 8',  units:['AHU-G08-Z8','AHU-G09A-Z8','FAHU-F01-Z8','FAHU-F04A-Z8','FAHU-F04B-Z8','FAHU-F05A-Z8','FAHU-F05A-R-Z8','FAHU-F05B-Z8']},
+  {id:'Z9', name:'زون 9',  en:'Zone 9',  units:['AHU-F01','AHU-F02','AHU-G06A','AHU-G06B','AHU-G07A','AHU-G07B','FAHU-F07A/D','FAHU-F07A/R','FAHU-F11','FAHU-F12','FAHU-F19A','FAHU-G03/R','FAHU-G11']}
+];
+
+// Fix Zone 8 display names
+var Z8_NAMES={'AHU-G08-Z8':'AHU-G08','AHU-G09A-Z8':'AHU-G09A','FAHU-F01-Z8':'FAHU-F01','FAHU-F04A-Z8':'FAHU-F04A','FAHU-F04B-Z8':'FAHU-F04B','FAHU-F05A-Z8':'FAHU-F05A','FAHU-F05A-R-Z8':'FAHU-F05A/R','FAHU-F05B-Z8':'FAHU-F05B'};
+
+var ALL_UNITS={};
+ZONES.forEach(function(z){
+  z.units.forEach(function(uid){
+    var displayName=Z8_NAMES[uid]||uid;
+    ALL_UNITS[uid]={id:uid,name:displayName,zone:z.id,zoneName:z.name+' ('+z.en+')'};
+  });
 });
 
-// ✅ إرسال البيانات
-document.getElementById("form").addEventListener("submit", async function(e){
-  e.preventDefault();
+var CHECKS={
+  daily:[
+    {id:'op',   lbl:'تشغيل الوحدة',        sub:'Unit Operation Check',              type:'tog'},
+    {id:'chwp', lbl:'ضغط المياه المبردة',  sub:'CHW Pressure (3-5 bar)',            type:'tog'},
+    {id:'chwt', lbl:'درجة حرارة المياه',   sub:'CHW Temp (8-12°C)',                 type:'tog'},
+    {id:'heat', lbl:'السخان (Heater)',      sub:'Heater Operation',                  type:'tog'},
+    {id:'tr',   lbl:'قراءة الحرارة T.',    sub:'Temperature Reading',               type:'num',unit:'°C'},
+    {id:'pr',   lbl:'قراءة الضغط P.',      sub:'Pressure Reading',                  type:'num',unit:'bar'},
+    {id:'notes',lbl:'ملاحظات',             sub:'Remarks',                           type:'note'}
+  ],
+  weekly:[
+    {id:'snd',  lbl:'أصوات غير طبيعية',   sub:'Abnormal Sound Check',              type:'tog'},
+    {id:'duct', lbl:'قناة الهواء',         sub:'Air Duct Leaks & Insulation',       type:'tog'},
+    {id:'pipe', lbl:'مواسير المياه',       sub:'CHW Pipe & Fittings for Leaks',     type:'tog'},
+    {id:'filt', lbl:'تنظيف الفلاتر',      sub:'Check & Clean Filters',             type:'tog'},
+    {id:'uop',  lbl:'حالة الوحدة',         sub:'Unit Operation Condition',          type:'tog'},
+    {id:'notes',lbl:'ملاحظات',             sub:'Remarks',                           type:'note'}
+  ],
+  monthly:[
+    {id:'filt', lbl:'نظافة الفلاتر',      sub:'Check & Replace/Clean Filters',     type:'tog'},
+    {id:'lube', lbl:'تشحيم المحرك',       sub:'Grease Motor & Fan Bearings',       type:'tog'},
+    {id:'oil',  lbl:'زيت المواقف',        sub:'Oil Dampers & Door Hinges',         type:'tog'},
+    {id:'belt', lbl:'السير (Belt)',        sub:'Belt Condition & Tension',          type:'tog'},
+    {id:'dps',  lbl:'DPS الفلاتر',        sub:'Filters DPS Working Properly',      type:'tog'},
+    {id:'bolt', lbl:'شد البراغي',         sub:'Retighten Fixation Bolts & Nuts',   type:'tog'},
+    {id:'hum',  lbl:'نظام الترطيب',       sub:'Check Humidifier System',           type:'tog'},
+    {id:'htr',  lbl:'فحص السخان',         sub:'Check Heater Operation',            type:'tog'},
+    {id:'notes',lbl:'ملاحظات',            sub:'Remarks',                           type:'note'}
+  ],
+  halfyearly:[
+    {id:'dmp',  lbl:'تنظيف المواقف',      sub:'Clean Dampers',                     type:'tog'},
+    {id:'coil', lbl:'ملفات التبريد',      sub:'Clean Cooling Coils & Fins',        type:'tog'},
+    {id:'str',  lbl:'فلتر المياه',        sub:'Clean CHW Strainer',               type:'tog'},
+    {id:'alu',  lbl:'الفلاتر الألومنيوم', sub:'Clean Aluminum Filters',            type:'tog'},
+    {id:'amp',  lbl:'أمبير المحرك',       sub:'Check Motor Ampere',               type:'num',unit:'A'},
+    {id:'bagf', lbl:'تغيير Bag Filter',   sub:'Change Bag Filter',                 type:'tog'},
+    {id:'notes',lbl:'ملاحظات',            sub:'Remarks',                           type:'note'}
+  ],
+  annually:[
+    {id:'hous', lbl:'هيكل المروحة',       sub:'Fan Housing, Wheel, Shaft, Frame',  type:'tog'},
+    {id:'mbr',  lbl:'بيارينجات المحرك',  sub:'Change Motor Bearings',             type:'tog'},
+    {id:'bbr',  lbl:'بيارينجات المروحة', sub:'Change Blower Bearings',            type:'tog'},
+    {id:'vlv',  lbl:'الصمامات',          sub:'Check All Valves Working',          type:'tog'},
+    {id:'elc',  lbl:'لوحة الكهرباء',     sub:'Electrical Panel Components',       type:'tog'},
+    {id:'act',  lbl:'محركات DPS',         sub:'Actuators & DPS & Dampers',         type:'tog'},
+    {id:'fil2', lbl:'Bag + Alu Filters',  sub:'Change Bag, Clean Alu Filters',     type:'tog'},
+    {id:'flex', lbl:'الوصلات المرنة',    sub:'Flex Connector Damage & Wear',      type:'tog'},
+    {id:'notes',lbl:'ملاحظات',           sub:'Remarks',                           type:'note'}
+  ]
+};
+var LVL={daily:'☀️ يومي',weekly:'📅 أسبوعي',monthly:'🗓️ شهري',halfyearly:'📊 نصف سنوي',annually:'🔧 سنوي'};
+var LVL_EN={daily:'Daily',weekly:'Weekly',monthly:'Monthly',halfyearly:'Half Yearly',annually:'Annually'};
 
-  let file = document.getElementById("photo").files[0];
+//---
+// STATE
+//---
+var selUnit=null,selLvl='daily',fd={};
+var records=[];
+try{records=JSON.parse(localStorage.getItem('hvac_kfmc')||'[]');}catch(e){}
+var qrZone='BSM';
+var SITE_URL=(function(){return window.location.href.split('?')[0].replace(/\/+$/,'');})();
 
-  let reader = new FileReader();
+//---
+// UNITS
+//---
+function renderUnits(filter){
+  var html='';
+  var q=(filter||'').toLowerCase().trim();
+  ZONES.forEach(function(z){
+    var units=z.units.filter(function(uid){
+      if(!q) return true;
+      var u=ALL_UNITS[uid];
+      return u.name.toLowerCase().includes(q)||z.name.includes(q)||z.en.toLowerCase().includes(q);
+    });
+    if(!units.length) return;
+    html+='<div class="zone-hdr">'+z.name+' <span style="font-size:9px;font-weight:400;opacity:.6">'+z.en+'</span><span class="zone-cnt">'+units.length+' وحدة</span></div>';
+    units.forEach(function(uid){
+      var u=ALL_UNITS[uid];
+      var lr=records.find(function(r){return r.unitId===uid;});
+      html+='<div class="ucard" onclick="pickUnit(\''+uid+'\')">'+
+        '<div class="urow"><span class="uname">'+u.name+'</span>'+
+        '<span class="bdg '+(lr?'b-ok':'b-due')+'">'+(lr?'✓ تم':'⏳ لم يُصان')+'</span></div>'+
+        '<div class="umeta">📍 '+u.zoneName+(lr?' | آخر صيانة: '+lr.date:'')+'</div></div>';
+    });
+  });
+  if(!html) html='<div class="empty"><div class="empty-icon">🔍</div><div>لا توجد نتائج</div></div>';
+  document.getElementById('units-list').innerHTML=html;
+}
 
-  reader.onloadend = async function() {
+function filterUnits(q){renderUnits(q);}
 
-    let data = {
-      unit: document.getElementById("unit").value,
-      tech: document.getElementById("tech").value,
-      date: document.getElementById("date").value,
-      type: document.getElementById("type").value,
-      status: document.getElementById("status").value,
-      notes: document.getElementById("notes").value,
-      image: reader.result
-    };
+function pickUnit(id){
+  selUnit=ALL_UNITS[id];
+  selLvl='daily';
+  fd={};
+  renderUnits();
+  document.getElementById('hdrsub').textContent=selUnit.name+' — '+selUnit.zoneName;
+  buildForm();
+  go('form');
+}
 
-    try {
-      await fetch("PUT_YOUR_GOOGLE_SCRIPT_URL_HERE", {
-        method: "POST",
-        body: JSON.stringify(data)
-      });
+//---
+// FORM
+//---
+function buildForm(){
+  if(!selUnit){return;}
+  var checks=CHECKS[selLvl];
+  var togs=checks.filter(function(c){return c.type==='tog';});
+  var done=togs.filter(function(c){return fd[c.id]!==undefined;}).length;
+  var pct=togs.length?Math.round(done/togs.length*100):0;
 
-      alert("✅ Saved Successfully");
-
-      document.getElementById("form").reset();
-
-    } catch (err) {
-      alert("❌ Error sending data");
+  var html='<div class="fhdr"><h2>'+selUnit.name+'</h2><p>📍 '+selUnit.zoneName+' | King Faisal Medical Complex</p></div>';
+  html+='<div class="stitle">مستوى الصيانة</div><div class="lvltabs">';
+  Object.keys(LVL).forEach(function(k){html+='<button class="lt '+(selLvl===k?'active':'')+'" onclick="setLvl(\''+k+'\')">'+LVL[k]+'</button>';});
+  html+='</div>';
+  html+='<div class="stitle">معلومات الفني</div><div class="finrow">';
+  html+='<input class="fin" id="tech" placeholder="👷 اسم الفني" value="'+(fd._tech||'')+'"><input class="fin" id="fdate" type="date" value="'+(fd._date||new Date().toISOString().split('T')[0])+'"></div>';
+  html+='<div class="pbar-row">اكتمال النموذج <span>'+pct+'%</span></div><div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div>';
+  html+='<div class="stitle">بنود الصيانة — '+LVL[selLvl]+'</div><div class="clwrap">';
+  checks.forEach(function(c){
+    if(c.type==='tog'){
+      var v=fd[c.id];
+      html+='<div class="ci"><div class="ciinfo"><div class="cilbl">'+c.lbl+'</div><div class="cisub">'+c.sub+'</div></div>'+
+        '<div class="tg"><button class="tb '+(v===true?'ty':'')+'" onclick="sv(\''+c.id+'\',true)">✓ تم</button>'+
+        '<button class="tb '+(v===false?'tn':'')+'" onclick="sv(\''+c.id+'\',false)">✗ لا</button></div></div>';
+    } else if(c.type==='num'){
+      html+='<div class="ci" style="align-items:center"><div class="ciinfo"><div class="cilbl">'+c.lbl+'</div><div class="cisub">'+c.sub+'</div></div>'+
+        '<input class="numin" type="number" step="0.1" placeholder="—" value="'+(fd[c.id]||'')+'" oninput="fd[\''+c.id+'\']=this.value">'+
+        '<span class="ulbl">'+c.unit+'</span></div>';
+    } else {
+      html+='<div class="ci" style="flex-direction:column;align-items:stretch;gap:6px"><div class="cilbl">'+c.lbl+'</div>'+
+        '<textarea class="nota" placeholder="اكتب ملاحظاتك..." oninput="fd.notes=this.value">'+(fd.notes||'')+'</textarea></div>';
     }
+  });
+  html+='</div><button class="sbtn" onclick="submitForm()">✅ حفظ وإنشاء التقرير</button><div style="height:20px"></div>';
+  document.getElementById('form-wrap').innerHTML=html;
+}
 
-  };
+function setLvl(lvl){
+  fd._tech=document.getElementById('tech')&&document.getElementById('tech').value||fd._tech||'';
+  fd._date=document.getElementById('fdate')&&document.getElementById('fdate').value||fd._date||'';
+  selLvl=lvl;var tmp={_tech:fd._tech,_date:fd._date};fd=tmp;buildForm();
+}
+function sv(key,val){
+  fd._tech=document.getElementById('tech')&&document.getElementById('tech').value||fd._tech||'';
+  fd._date=document.getElementById('fdate')&&document.getElementById('fdate').value||fd._date||'';
+  fd[key]=val;buildForm();
+}
+function submitForm(){
+  fd._tech=(document.getElementById('tech')&&document.getElementById('tech').value)||'';
+  fd._date=(document.getElementById('fdate')&&document.getElementById('fdate').value)||'';
+  if(!fd._tech.trim()){alert('الرجاء إدخال اسم الفني');return;}
+  var togs=CHECKS[selLvl].filter(function(c){return c.type==='tog';});
+  var dT=togs.filter(function(c){return fd[c.id]===true;}).length;
+  var nT=togs.filter(function(c){return fd[c.id]===false;}).length;
+  var rec={unitId:selUnit.id,unit:JSON.parse(JSON.stringify(selUnit)),lvl:selLvl,
+           tech:fd._tech,date:fd._date,data:JSON.parse(JSON.stringify(fd)),
+           doneT:dT,notDoneT:nT,ts:Date.now()};
+  records.unshift(rec);
+  try{localStorage.setItem('hvac_kfmc',JSON.stringify(records.slice(0,500)));}catch(e){}
+  showSuccess(rec,dT,nT);renderUnits();
+}
+function showSuccess(rec,dT,nT){
+  document.getElementById('form-wrap').innerHTML=
+    '<div class="succ"><div class="si">✅</div><div class="st">تم حفظ التقرير</div>'+
+    '<div class="ss">'+rec.unit.name+' — '+LVL_EN[rec.lvl]+'<br>'+rec.date+' | 👷 '+rec.tech+'</div>'+
+    '<div class="sstats"><div class="sstat"><div class="snum" style="color:#1a7a4a">'+dT+'</div><div class="slbl">مكتمل</div></div>'+
+    '<div class="sstat"><div class="snum" style="color:#c0392b">'+nT+'</div><div class="slbl">متابعة</div></div>'+
+    '<div class="sstat"><div class="snum" style="color:#0a2e5c">'+(dT+nT)+'</div><div class="slbl">إجمالي</div></div></div>'+
+    '<div class="abtns">'+
+    '<button class="ab navy" onclick="showModal(records[0])">📨 إرسال تقرير للمشرف</button>'+
+    '<button class="ab grn" onclick="printReport(records[0])">🖨️ طباعة / PDF</button>'+
+    '<button class="ab" onclick="go(\'records\')">📁 عرض السجلات</button>'+
+    '<button class="ab" onclick="selUnit=null;fd={};renderUnits();go(\'units\')">➕ وحدة جديدة</button>'+
+    '</div></div>';
+  renderRecs();
+}
 
-  reader.readAsDataURL(file);
-});
+//---
+// RECORDS
+//---
+function renderRecs(){
+  var el=document.getElementById('rec-list');
+  if(!records.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div>لا توجد سجلات بعد</div></div>';return;}
+  el.innerHTML=records.map(function(r,i){
+    return '<div class="ri">'+
+      '<div class="rrow"><span class="rname">'+r.unit.name+' — '+LVL_EN[r.lvl]+'</span><span class="rdate">'+r.date+'</span></div>'+
+      '<div class="rtech">👷 '+r.tech+' | '+r.unit.zoneName+'</div>'+
+      '<div class="rpills"><span class="rp" style="background:#e8f8f0;color:#1a7a4a">✓ '+r.doneT+'</span>'+
+      (r.notDoneT?'<span class="rp" style="background:#fef0f0;color:#c0392b">✗ '+r.notDoneT+'</span>':'')+
+      (r.data&&r.data.notes?'<span class="rp" style="background:#fff3e0;color:#a05c00">📝</span>':'')+
+      '<button class="rbtn" onclick="showModal(records['+i+'])">إرسال ↗</button></div></div>';
+  }).join('');
+}
 
+//---
+// MODAL
+//---
+function showModal(rec){
+  var checks=CHECKS[rec.lvl].filter(function(c){return c.type!=='note';});
+  var txt='📋 تقرير الصيانة الوقائية — '+LVL_EN[rec.lvl]+'\n';
+  txt+='AL MAJAL AL ARABI GROUP — HVAC\n';
+  txt+='King Faisal Medical Complex\n';
+  txt+='━━━━━━━━━━━━━━━━━━━━━━\n';
+  txt+='🏢 الوحدة  : '+rec.unit.name+'\n';
+  txt+='📍 المنطقة : '+rec.unit.zoneName+'\n';
+  txt+='📅 التاريخ : '+rec.date+'\n';
+  txt+='👷 الفني   : '+rec.tech+'\n';
+  txt+='━━━━━━━━━━━━━━━━━━━━━━\n';
+  checks.forEach(function(c){
+    var v=rec.data[c.id];
+    var m=c.type==='num'?(v||'—')+' '+(c.unit||''):(v===true?'✓ تم':v===false?'✗ لم يتم':'—');
+    txt+=(v===true?'✅':v===false?'❌':'⬜')+' '+c.lbl+': '+m+'\n';
+  });
+  txt+='━━━━━━━━━━━━━━━━━━━━━━\n✅ مكتمل: '+rec.doneT+' | ❌ متابعة: '+rec.notDoneT;
+  if(rec.data&&rec.data.notes)txt+='\n📝 ملاحظات:\n'+rec.data.notes;
+  document.getElementById('modal-msg').textContent=txt;
+  document.getElementById('modal').style.display='flex';
+  window._rpt=txt;
+}
+function closeModal(){document.getElementById('modal').style.display='none';}
+function copyReport(){
+  var txt=window._rpt||'';
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){alert('✅ تم نسخ التقرير\nالصقه في واتساب أو البريد');}).catch(function(){fb(txt);});
+  }else{fb(txt);}
+}
+function fb(txt){var ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('✅ تم نسخ التقرير');}
+
+//---
+// PRINT PDF
+//---
+function printReport(rec){
+  var checks=CHECKS[rec.lvl].filter(function(c){return c.type!=='note';});
+  var w=window.open('','_blank');
+  if(!w){alert('فعّل النوافذ المنبثقة');return;}
+  var rows=checks.map(function(c){
+    var v=rec.data[c.id];
+    var res=c.type==='num'?'<b>'+(v||'—')+' '+(c.unit||'')+'</b>':v===true?'<span style="color:green;font-weight:700">✓ تم</span>':v===false?'<span style="color:red;font-weight:700">✗ لم يتم</span>':'<span style="color:#aaa">—</span>';
+    return '<tr><td>'+c.lbl+'</td><td style="font-size:11px;color:#666">'+c.sub+'</td><td>'+res+'</td></tr>';
+  }).join('');
+  w.document.write('<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>'+rec.unit.name+'</title>'+
+    '<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui;padding:22px;font-size:13px;direction:rtl}'+
+    '.hdr{background:#0a2e5c;color:#fff;padding:12px 15px;border-radius:9px;margin-bottom:12px}'+
+    '.hdr h1{font-size:14px;font-weight:600}.hdr p{font-size:10px;opacity:.7;margin-top:2px}'+
+    '.meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}'+
+    '.mb{background:#f4f7fb;border-radius:7px;padding:8px 11px}.ml{font-size:10px;color:#888;margin-bottom:2px}.mv{font-size:13px;font-weight:600;color:#0a2e5c}'+
+    '.stats{display:flex;gap:9px;margin-bottom:12px}'+
+    '.sb{flex:1;text-align:center;border-radius:7px;padding:9px}'+
+    'table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px}'+
+    'th{background:#0a2e5c;color:#fff;padding:6px 8px;text-align:right;font-weight:500}'+
+    'td{border-bottom:1px solid #eee;padding:6px 8px;text-align:right}'+
+    'tr:nth-child(even)td{background:#f9fafb}'+
+    '.ft{border-top:1px solid #eee;padding-top:8px;font-size:10px;color:#aaa;text-align:center;margin-top:8px}'+
+    '@media print{body{padding:10px}}</style></head><body>'+
+    '<div class="hdr"><h1>❄️ تقرير الصيانة الوقائية — '+LVL_EN[rec.lvl]+'</h1>'+
+    '<p>AL MAJAL AL ARABI GROUP — HVAC | King Faisal Medical Complex</p></div>'+
+    '<div class="meta">'+
+    '<div class="mb"><div class="ml">الوحدة</div><div class="mv">'+rec.unit.name+'</div></div>'+
+    '<div class="mb"><div class="ml">المنطقة</div><div class="mv">'+rec.unit.zoneName+'</div></div>'+
+    '<div class="mb"><div class="ml">التاريخ</div><div class="mv">'+rec.date+'</div></div>'+
+    '<div class="mb"><div class="ml">الفني</div><div class="mv">'+rec.tech+'</div></div></div>'+
+    '<div class="stats">'+
+    '<div class="sb" style="background:#e8f8f0"><div style="font-size:22px;font-weight:700;color:#1a7a4a">'+rec.doneT+'</div><div style="font-size:10px;color:#1a7a4a;margin-top:2px">مكتمل</div></div>'+
+    '<div class="sb" style="background:#fef0f0"><div style="font-size:22px;font-weight:700;color:#c0392b">'+rec.notDoneT+'</div><div style="font-size:10px;color:#c0392b;margin-top:2px">يحتاج متابعة</div></div></div>'+
+    '<table><tr><th>بند الصيانة</th><th>الوصف</th><th>النتيجة</th></tr>'+rows+'</table>'+
+    (rec.data&&rec.data.notes?'<div style="background:#fff3e0;border-radius:7px;padding:10px;font-size:12px;line-height:1.7;margin-bottom:10px"><b>📝 ملاحظات:</b><br><br>'+rec.data.notes+'</div>':'')+
+    '<div class="ft">HVAC Maintenance System — King Faisal Medical Complex — '+new Date().toLocaleDateString('ar-SA')+'</div>'+
+    '</body></html>');
+  w.document.close();setTimeout(function(){w.print();},400);
+}
+
+//---
+// QR CODES
+//---
+function updateURL(){
+  var inp=document.getElementById('url-input');
+  if(inp&&inp.value.trim()){
+    SITE_URL=inp.value.trim().replace(/\/+$/,'');
+    renderQR();
+    alert('✅ تم تحديث الـ QR بالرابط الجديد');
+  }
+}
+function renderQRZoneTabs(){
+  document.getElementById('qr-zone-tabs').innerHTML=ZONES.map(function(z){
+    return '<button class="zt '+(qrZone===z.id?'active':'')+'" onclick="qrZone=\''+z.id+'\';renderQRZoneTabs();renderQR()">'+z.name+'</button>';
+  }).join('');
+}
+function renderQR(){
+  var inp=document.getElementById('url-input');
+  if(inp&&!inp.value)inp.value=SITE_URL;
+  var zone=ZONES.find(function(z){return z.id===qrZone;});
+  var html=zone.units.map(function(uid){
+    var u=ALL_UNITS[uid];
+    var url=SITE_URL+'?unit='+encodeURIComponent(uid);
+    var svgHtml='';
+    try{var qr=QR.encode(url);svgHtml=QR.toSVG(qr,110,'#0a2e5c','#ffffff');}
+    catch(e){svgHtml='<div style="width:110px;height:110px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:9px;color:#999;margin:0 auto;border-radius:4px">QR Error</div>';}
+    return '<div class="qcard"><div class="qname">'+u.name+'</div>'+svgHtml+'<div class="qid">'+zone.name+'</div></div>';
+  }).join('');
+  document.getElementById('qr-grid').innerHTML=html;
+}
+function printAllQR(){
+  var w=window.open('','_blank');
+  if(!w){alert('فعّل النوافذ المنبثقة');return;}
+  var cards='';
+  ZONES.forEach(function(z){
+    cards+='<div class="zt">'+z.name+' ('+z.en+')</div><div class="zg">';
+    z.units.forEach(function(uid){
+      var u=ALL_UNITS[uid];
+      var url=SITE_URL+'?unit='+encodeURIComponent(uid);
+      var svgH='';
+      try{var qr=QR.encode(url);svgH=QR.toSVG(qr,160,'#000','#fff');}catch(e){svgH='<div style="width:160px;height:160px;background:#eee;display:inline-block"></div>';}
+      cards+='<div class="qi">'+svgH+'<div class="un">'+u.name+'</div><div class="uz">'+z.name+'</div></div>';
+    });
+    cards+='</div>';
+  });
+  w.document.write('<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>QR Codes — HVAC</title>'+
+    '<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui;padding:14px;direction:rtl}'+
+    '.title{text-align:center;margin-bottom:12px;color:#0a2e5c;font-size:14px;font-weight:700;padding:10px;background:#EBF4FF;border-radius:7px}'+
+    '.zt{font-size:11px;font-weight:700;color:#0a2e5c;margin:11px 0 6px;padding:5px 8px;background:#f0f6ff;border-radius:5px}'+
+    '.zg{display:flex;flex-wrap:wrap;gap:9px}'+
+    '.qi{border:1px solid #ddd;border-radius:9px;padding:10px;text-align:center;background:#fff;width:182px;page-break-inside:avoid}'+
+    '.qi svg{display:block;margin:0 auto}.un{font-size:11px;font-weight:700;color:#0a2e5c;margin-top:6px;font-family:monospace}.uz{font-size:9px;color:#888;margin-top:2px}'+
+    '.pb{display:block;margin:0 auto 12px;background:#0a2e5c;color:#fff;border:none;padding:8px 24px;border-radius:7px;font-size:13px;cursor:pointer}'+
+    '@media print{.pb{display:none}}</style></head><body>'+
+    '<div class="title">❄️ HVAC QR Codes — King Faisal Medical Complex (85 وحدة)</div>'+
+    '<button class="pb" onclick="window.print()">🖨️ طباعة الكل</button>'+
+    cards+'</body></html>');
+  w.document.close();
+}
+
+//---
+// NAVIGATION
+//---
+function go(tab){
+  var tabs=['units','form','records','qr'];
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',tabs[i]===tab);});
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('pg-'+tab).classList.add('active');
+  if(tab==='records')renderRecs();
+  if(tab==='qr'){renderQRZoneTabs();renderQR();}
+  if(tab==='form'&&selUnit)buildForm();
+}
+
+//---
+// INIT
+//---
+function init(){
+  try{
+    renderUnits();
+    renderRecs();
+    var p=new URLSearchParams(window.location.search);
+    var uid=p.get('unit');
+    if(uid&&ALL_UNITS[uid])setTimeout(function(){pickUnit(uid);},400);
+  }catch(e){
+    document.getElementById('units-list').innerHTML='<div style="padding:20px;color:red;font-size:12px">Init Error: '+e.message+'</div>';
+    console.error('Init error:',e);
+  }
+}
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+}else{
+  init();
+}
 </script>
-
 </body>
 </html>
