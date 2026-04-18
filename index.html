@@ -681,7 +681,7 @@ function printReport(rec){
     'th{background:#0a2e5c;color:#fff;padding:6px 8px;text-align:right;font-weight:500}'+
     'td{border-bottom:1px solid #eee;padding:6px 8px;text-align:right}'+
     'tr:nth-child(even)td{background:#f9fafb}'+
-    '.ft{border-top:1px solid #eee;padding-top:8px;font-size:10px;color:#aaa;text-align:center;margin-top:8px}'+
+    '.ft{border-top:1px solid #eee;padding-top:8px;font-size:10px;color:#aaa;text-align:center;margin-top:8px}.sig-section{margin-top:28px;border-top:2px solid #0a2e5c;padding-top:16px}.sig-title{font-size:11px;font-weight:700;color:#0a2e5c;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;text-align:center}.sig-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}.sig-box{text-align:center}.sig-name{font-size:11px;font-weight:700;color:#0a2e5c;margin-bottom:2px}.sig-role{font-size:9px;color:#8a94a6;margin-bottom:30px;text-transform:uppercase;letter-spacing:.06em}.sig-line{border-top:1.5px solid #0a2e5c;margin-top:4px;padding-top:4px;font-size:9px;color:#8a94a6}'+
     '@media print{body{padding:10px}}</style></head><body>'+
     '<div class="hdr"><h1>❄️ تقرير الصيانة الوقائية — '+LVL_EN[rec.lvl]+'</h1>'+
     '<p>AL MAJAL AL ARABI GROUP — HVAC | King Faisal Medical Complex</p></div>'+
@@ -695,7 +695,7 @@ function printReport(rec){
     '<div class="sb" style="background:#fef0f0"><div style="font-size:22px;font-weight:700;color:#c0392b">'+rec.notDoneT+'</div><div style="font-size:10px;color:#c0392b;margin-top:2px">يحتاج متابعة</div></div></div>'+
     '<table><tr><th>بند الصيانة</th><th>الوصف</th><th>النتيجة</th></tr>'+rows+'</table>'+
     (rec.data&&rec.data.notes?'<div style="background:#fff3e0;border-radius:7px;padding:10px;font-size:12px;line-height:1.7;margin-bottom:10px"><b>📝 ملاحظات:</b><br><br>'+rec.data.notes+'</div>':'')+
-    '<div class="ft">HVAC Maintenance System — King Faisal Medical Complex — '+new Date().toLocaleDateString('ar-SA')+'</div>'+
+    '<div class="sig-section"><div class="sig-title">Authorized Signatures — التواقيع المعتمدة</div><div class="sig-grid"><div class="sig-box"><div class="sig-name">Technician</div><div class="sig-role">الفني المنفذ</div><div class="sig-line">Signature / التوقيع</div></div><div class="sig-box"><div class="sig-name">HVAC Engineer</div><div class="sig-role">مهندس التكييف</div><div class="sig-line">Signature / التوقيع</div></div><div class="sig-box"><div class="sig-name">Head of HVAC Dept.</div><div class="sig-role">رئيس قسم التكييف</div><div class="sig-line">Signature / التوقيع</div></div></div></div>'+'<div class="ft">HVAC Maintenance System — King Faisal Medical Complex — '+new Date().toLocaleDateString('ar-SA')+'</div>'+
     '</body></html>');
   w.document.close();setTimeout(function(){w.print();},400);
 }
