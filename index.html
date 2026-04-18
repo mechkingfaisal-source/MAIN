@@ -149,9 +149,9 @@ body{background:#f0f2f5;color:#0d1b2a}
     <div class="offl"><div class="offl-dot"></div>Offline</div>
   </div>
   <div class="tabs">
-    <div class="tab active" onclick="go('units')"><span class="tab-icon">🏢</span>الوحدات</div>
-    <div class="tab" onclick="go('form')"><span class="tab-icon">📋</span>النموذج</div>
-    <div class="tab" onclick="go('records')"><span class="tab-icon">📁</span>السجلات</div>
+    <div class="tab active" onclick="go('units')"><span class="tab-icon">🏢</span>Units</div>
+    <div class="tab" onclick="go('form')"><span class="tab-icon">📋</span>Form</div>
+    <div class="tab" onclick="go('records')"><span class="tab-icon">📁</span>Records</div>
     <div class="tab" onclick="go('qr')"><span class="tab-icon">⬛</span>QR Codes</div>
   </div>
   <div class="pages">
@@ -168,13 +168,13 @@ body{background:#f0f2f5;color:#0d1b2a}
     <!-- FORM -->
     <div class="pg" id="pg-form">
       <div id="form-wrap">
-        <div class="empty"><div class="empty-icon">👈</div><div>اختر وحدة من تبويب الوحدات</div></div>
+        <div class="empty"><div class="empty-icon">👈</div><div>Select a unit from the Units tab</div></div>
       </div>
     </div>
 
     <!-- RECORDS -->
     <div class="pg" id="pg-records">
-      <div class="info">💡 السجلات محفوظة على الجهاز — تعمل بدون إنترنت</div>
+      <div class="info">💡 Records saved on device — works offline</div>
       <div id="rec-list"></div>
     </div>
 
@@ -344,7 +344,7 @@ var CHECKS={
     {id:'notes',lbl:'ملاحظات',           sub:'Remarks',                           type:'note'}
   ]
 };
-var LVL={daily:'☀️ يومي',weekly:'📅 أسبوعي',monthly:'🗓️ شهري',halfyearly:'📊 نصف سنوي',annually:'🔧 سنوي'};
+var LVL={daily:'☀️ Daily',weekly:'📅 Weekly',monthly:'🗓️ Monthly',halfyearly:'📊 Half Yearly',annually:'🔧 Annually'};
 var LVL_EN={daily:'Daily',weekly:'Weekly',monthly:'Monthly',halfyearly:'Half Yearly',annually:'Annually'};
 
 //---
@@ -459,13 +459,13 @@ function buildForm(){
   var pct=togs.length?Math.round(done/togs.length*100):0;
 
   var html='<div class="fhdr"><h2>'+selUnit.name+'</h2><p>📍 '+selUnit.zoneName+' | King Faisal Medical Complex</p></div>';
-  html+='<div class="stitle">مستوى الصيانة</div><div class="lvltabs">';
+  html+='<div class="stitle">Maintenance Level</div><div class="lvltabs">';
   Object.keys(LVL).forEach(function(k){html+='<button class="lt '+(selLvl===k?'active':'')+'" onclick="setLvl(\''+k+'\')">'+LVL[k]+'</button>';});
   html+='</div>';
-  html+='<div class="stitle">معلومات الفني</div><div class="finrow">';
-  html+='<input class="fin" id="tech" placeholder="👷 اسم الفني" value="'+(fd._tech||'')+'"><input class="fin" id="fdate" type="date" value="'+(fd._date||new Date().toISOString().split('T')[0])+'"></div>';
-  html+='<div class="pbar-row">اكتمال النموذج <span>'+pct+'%</span></div><div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div>';
-  html+='<div class="stitle">بنود الصيانة — '+LVL[selLvl]+'</div><div class="clwrap">';
+  html+='<div class="stitle">Technician Info</div><div class="finrow">';
+  html+='<input class="fin" id="tech" placeholder="👷 Technician Name" value="'+(fd._tech||'')+'"><input class="fin" id="fdate" type="date" value="'+(fd._date||new Date().toISOString().split('T')[0])+'"></div>';
+  html+='<div class="pbar-row">Form Completion <span>'+pct+'%</span></div><div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div>';
+  html+='<div class="stitle">Checklist — '+LVL[selLvl]+'</div><div class="clwrap">';
   checks.forEach(function(c){
     if(c.type==='tog'){
       var v=fd[c.id];
@@ -489,18 +489,18 @@ function buildForm(){
       return '<div class="cam-photo-wrap"><img src="'+p+'"><button class="cam-del" onclick="delPhoto('+i+')">✕</button></div>';
     }).join('');
   }
-  html+='<div class="stitle">📸 التحقق الفعلي بالصورة</div>';
+  html+='<div class="stitle">📸 Physical Inspection Photo</div>';
   html+='<div class="cam-wrap">';
   html+='<div class="cam-title">📷 <span>UNIT PHYSICAL INSPECTION PHOTO</span></div>';
-  html+='<button class="cam-btn" onclick="takePhoto()">📸 التقاط صورة بالكاميرا — CAPTURE PHOTO</button>';
+  html+='<button class="cam-btn" onclick="takePhoto()">📸 CAPTURE PHOTO</button>';
 
   html+='<input type="file" id="cam-file" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)">';
 
   if(fd._photos&&fd._photos.length){
-    html+='<div class="cam-verify">✅ <b>VERIFIED — تم التحقق الفعلي</b> | '+fd._photos.length+' صورة مُلتقطة</div>';
+    html+='<div class="cam-verify">✅ <b>VERIFIED — Inspection Confirmed</b> | '+fd._photos.length+' photo(s) captured</div>';
     html+='<div class="cam-photos">'+photosHtml+'</div>';
   } else {
-    html+='<div style="font-size:10px;color:#c0392b;font-weight:700;text-align:center;padding:4px 0">⚠️ NO PHOTO YET — لم يتم التقاط صورة بعد</div>';
+    html+='<div style="font-size:10px;color:#c0392b;font-weight:700;text-align:center;padding:4px 0">⚠️ NO PHOTO YET — Please capture a photo</div>';
   }
   html+='</div>';
   html+='<button class="sbtn" onclick="submitForm()">✅ حفظ وإنشاء التقرير</button><div style="height:20px"></div>';
@@ -543,7 +543,7 @@ function sv(key,val){
 function submitForm(){
   fd._tech=(document.getElementById('tech')&&document.getElementById('tech').value)||'';
   fd._date=(document.getElementById('fdate')&&document.getElementById('fdate').value)||'';
-  if(!fd._tech.trim()){alert('الرجاء إدخال اسم الفني');return;}
+  if(!fd._tech.trim()){alert('Please enter technician name');return;}
   var togs=CHECKS[selLvl].filter(function(c){return c.type==='tog';});
   var dT=togs.filter(function(c){return fd[c.id]===true;}).length;
   var nT=togs.filter(function(c){return fd[c.id]===false;}).length;
@@ -592,8 +592,8 @@ function showSuccess(rec,dT,nT){
     '<div class="abtns">'+
     '<button class="ab navy" onclick="showModal(records[0])">📨 إرسال تقرير للمشرف</button>'+
     '<button class="ab grn" onclick="printReport(records[0])">🖨️ طباعة / PDF</button>'+
-    '<button class="ab" onclick="go(\'records\')">📁 عرض السجلات</button>'+
-    '<button class="ab" onclick="selUnit=null;fd={};renderUnits();go(\'units\')">➕ وحدة جديدة</button>'+
+    '<button class="ab" onclick="go(\'records\')">📁 View Records</button>'+
+    '<button class="ab" onclick="selUnit=null;fd={};renderUnits();go(\'units\')">➕ New Unit</button>'+
     '</div></div>';
   renderRecs();
 }
