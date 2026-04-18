@@ -619,7 +619,8 @@ function renderRecs(){
       (r.notDoneT?'<span class="rp" style="background:#fef0f0;color:#c0392b">✗ '+r.notDoneT+'</span>':'')+
       (r.data&&r.data.notes?'<span class="rp" style="background:#fff3e0;color:#a05c00">📝</span>':'')+
       (photoCount?'<span class="rp" style="background:#e8f0ff;color:#1a5fae">📸 '+photoCount+'</span>':'')+
-      '<button class="rbtn" onclick="showModal(records['+i+'])">إرسال ↗</button></div></div>';
+      '<button class="rbtn" onclick="showModal(records['+i+'])">إرسال ↗</button>'+
+      '<button class="rbtn" style="background:#0a2e5c;color:#fff;border-color:#0a2e5c" onclick="printReport(records['+i+'])">🖨️ Print</button></div></div>';
   }).join('');
 }
 
